@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "50602321953",
+    "firebase_url": "https://fir-api-c2a72.firebaseio.com",
+    "project_id": "fir-api-c2a72",
+    "storage_bucket": "fir-api-c2a72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50602321953:android:42dbfcc3a8f775b9471b60",
+        "android_client_info": {
+          "package_name": "com.vicheth.firebase_api"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50602321953-vcu7o0kh6s5c8ocfvfc29l0tph2ns7mv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyKqFVeyEzKl3RT_N4FAX_CZIrvLw2Y6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50602321953-vcu7o0kh6s5c8ocfvfc29l0tph2ns7mv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
