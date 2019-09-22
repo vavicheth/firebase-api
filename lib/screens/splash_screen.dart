@@ -16,27 +16,19 @@ class _SplashScreenState extends State<SplashScreen> {
   String _email = readDataFromLocal('usermail');
   String _pwd = readDataFromLocal('pwd');
 
-  var storeData = storage;
-
   @override
   void initState() {
     super.initState();
-    if (readStorage('userstorage') == null) {
-      print('Error');
-    } else {
-      print(readStorage('userstorage'));
-
-      Timer(Duration(seconds: 5), () {
-        Navigator.pushReplacement(
-          context,
-          PageTransition(
-            type: PageTransitionType.fade,
-            duration: Duration(seconds: 1),
-            child: LoginScreen(),
-          ),
-        );
-      });
-    }
+    Timer(Duration(seconds: 5), () {
+      Navigator.pushReplacement(
+        context,
+        PageTransition(
+          type: PageTransitionType.fade,
+          duration: Duration(seconds: 1),
+          child: LoginScreen(),
+        ),
+      );
+    });
   }
 
   @override

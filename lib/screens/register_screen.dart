@@ -1,7 +1,11 @@
 import 'package:firebase_api/screens/login_screen.dart';
+import 'package:firebase_api/screens/photos_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../helpers/keystore_helper.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -17,9 +21,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.account_box),
+              onPressed: () {
+                print(readStorage('userstorage'));
+                print(readStorage('pwdstorage'));
+              }),
+        ],
       ),
       body: _buildBody(),
     );
+  }
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<FirebaseUser> _handleSignin() async {
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
+    final FirebaseUser user =
+        (await _auth.signInWithCredential(credential)).user;
+    print('signin ${user.displayName}');
+    print('email: ${user.email}');
+    print('Phone ${user.phoneNumber}');
+    return user;
   }
 
   _buildBody() {
@@ -55,10 +85,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         .then((user) {
                       print('userID: ${user.uid} and email: ${user.email}');
                       Navigator.pushReplacement(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.fade,
-                              child: LoginScreen()));
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          child: LoginScreen(),
+                        ),
+                      );
                     });
                   }),
             ),
@@ -76,6 +108,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     );
                   }),
             ),
+            Container(
+              margin: EdgeInsets.only(bottom: 10.0),
+              child: RaisedButton(
+                  child: Text("Signin with Google"),
+                  onPressed: () {
+                    _handleSignin().then((user) {
+                      if (user != null) {
+                        Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            child: PhotoScreen(
+                              user: user,
+                            ),
+                          ),
+                        );
+                      } else {
+                        print('Login faild');
+                      }
+                    });
+                  }),
+            ),
           ],
         ),
       ),
@@ -83,6 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   Future<FirebaseUser> _registerByEmail(String email, String password) async {
     AuthResult result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
